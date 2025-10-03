@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Título dinâmico -->
+    <title th:text="${acomodacao.idAcomodacao == null} ? 'Nova Acomodação' : 'Editar Acomodação'"></title>
+
+    <!-- Link para o futuro CSS unificado de acomodações -->
+    <link rel="stylesheet" th:href="@{/acomodacoes.css}">
+
+    <!-- Importando a biblioteca de ícones Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Header Padrão -->
+<header class="main-header">
+    <div class="form-container">
+        <!-- Título e ícone dinâmicos -->
+        <h1 th:if="${acomodacao.idAcomodacao == null}"><i class="fas fa-hotel"></i> Nova Acomodação</h1>
+        <h1 th:unless="${acomodacao.idAcomodacao == null}"><i class="fas fa-edit"></i> Editar Acomodação</h1>
+        <p class="subtitle">Preencha os dados abaixo para gerenciar o local.</p>
+    </div>
+</header>
+
+<nav class="sub-header">
+    <div class="container">
+        <div class="nav-links">
+            <a th:href="@{/dashboard}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a th:href="@{/turistas}"><i class="fas fa-users"></i> Turistas</a>
+            <a th:href="@{/acomodacoes}"><i class="fas fa-building"></i> Acomodações</a>
+            <!-- O link da página atual fica com a classe 'active' -->
+            <a th:href="@{/viagens}" class="active"><i class="fas fa-plane-departure"></i> Viagens</a>
+        </div>
+
+        <div class="nav-actions">
+            <a href="#" class="btn-secondary-outline"><i class="fas fa-print"></i> Imprimir</a>
+            <a href="#" class="btn-secondary-outline"><i class="fas fa-file-export"></i> Exportar</a>
+        </div>
+    </div>
+</nav>
+<!-- ========================================================================== -->
+
+<main class="form-container">
+    <!-- Card de Formulário -->
+    <div class="content-card">
+        <div class="form-card-body">
+            <form th:action="${acomodacao.idAcomodacao == null} ? @{/acomodacoes} : @{/acomodacoes/{id}(id=${acomodacao.idAcomodacao} )}"
+                  th:object="${acomodacao}" method="post">
+
+                <!-- Simula o método PUT para edição -->
+                <input type="hidden" name="_method" th:if="${acomodacao.idAcomodacao != null}" value="PUT"/>
+
+                <!-- Campo de ID oculto (se estiver editando) -->
+                <input type="hidden" th:if="${acomodacao.idAcomodacao != null}" th:field="*{idAcomodacao}"/>
+
+                <!-- Grupo de Campos -->
+                <div class="form-group">
+                    <label for="nome"><i class="fas fa-signature"></i> Nome da Acomodação</label>
+                    <input type="text" id="nome" class="form-control" th:field="*{nome}" placeholder="Ex: Hotel Palace" required/>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tipo"><i class="fas fa-building"></i> Tipo</label>
+                        <select id="tipo" class="form-control" th:field="*{tipo}" required>
+                            <option value="" disabled selected>Selecione um tipo...</option>
+                            <option value="Hotel">Hotel</option>
+                            <option value="Pousada">Pousada</option>
+                            <option value="Apartamento">Apartamento</option>
+                            <option value="Casa">Casa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="precoPorNoite"><i class="fas fa-dollar-sign"></i> Preço por Noite (R$)</label>
+                        <input type="number" id="precoPorNoite" class="form-control" th:field="*{precoPorNoite}" step="0.01" min="0" placeholder="Ex: 250.00" required/>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cidade"><i class="fas fa-map-marker-alt"></i> Cidade</label>
+                        <input type="text" id="cidade" class="form-control" th:field="*{cidade}" placeholder="Ex: Rio de Janeiro" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="pais"><i class="fas fa-flag"></i> País</label>
+                        <input type="text" id="pais" class="form-control" th:field="*{pais}" placeholder="Ex: Brasil" required/>
+                    </div>
+                </div>
+
+                <!-- Botões de Ação -->
+                <div class="form-actions">
+                    <a th:href="@{/acomodacoes}" class="btn-secondary">
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-check"></i>
+                        <span th:text="${acomodacao.idAcomodacao == null} ? 'Cadastrar Acomodação' : 'Salvar Alterações'"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

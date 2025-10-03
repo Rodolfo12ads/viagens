@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Travel Management</title>
+    <link rel="stylesheet" th:href="@{/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<header class="main-header">
+    <div class="container">
+        <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+        <p class="subtitle">Visão geral do seu sistema de gerenciamento de viagens.</p>
+    </div>
+</header>
+
+<nav class="sub-header">
+    <div class="container">
+        <div class="nav-links">
+            <a th:href="@{/dashboard}" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a th:href="@{/turistas}"><i class="fas fa-users"></i> Turistas</a>
+            <a th:href="@{/acomodacoes}"><i class="fas fa-building"></i> Acomodações</a>
+            <a th:href="@{/viagens}"><i class="fas fa-plane-departure"></i> Viagens</a>
+            <a th:href="@{/pesquisas}"><i class="fas fa-plane-departure"></i> Pesquise sobre sua viagem</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <!-- ==========================================================================
+       NOVO: SEÇÃO DE CARDS DE ESTATÍSTICAS (KPIs )
+       ========================================================================== -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background-color: #e7f3ff; color: #007bff;">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-title">Total de Turistas</span>
+                <span class="kpi-value" th:text="${totalTuristas}">147</span>
+            </div>
+            <div class="kpi-growth positive">
+                <i class="fas fa-arrow-up"></i> 12%
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background-color: #e5f9f0; color: #28a745;">
+                <i class="fas fa-suitcase-rolling"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-title">Viagens Ativas</span>
+                <span class="kpi-value" th:text="${viagensAtivas}">89</span>
+            </div>
+            <div class="kpi-growth positive">
+                <i class="fas fa-arrow-up"></i> 8%
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background-color: #fff8e6; color: #ffc107;">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-title">Receita Mensal</span>
+                <span class="kpi-value" th:text="'R$ ' + ${#numbers.formatDecimal(receitaMensal, 1, 'POINT', 2, 'COMMA')}">R$ 45.2K</span>
+            </div>
+            <div class="kpi-growth negative">
+                <i class="fas fa-arrow-down"></i> 2%
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background-color: #fdeeee; color: #dc3545;">
+                <i class="fas fa-concierge-bell"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-title">Novas Reservas (Mês)</span>
+                <span class="kpi-value" th:text="${novasReservas}">23</span>
+            </div>
+            <div class="kpi-growth positive">
+                <i class="fas fa-arrow-up"></i> 5%
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       NOVO: SEÇÃO DE AÇÕES RÁPIDAS E ATIVIDADES RECENTES
+       ========================================================================== -->
+    <div class="dashboard-columns">
+        <!-- Coluna da Esquerda: Ações Rápidas -->
+        <div class="content-card">
+            <div class="list-card-header">
+                <h2>Ações Rápidas</h2>
+            </div>
+            <div class="quick-actions">
+                <a th:href="@{/viagens/novo}" class="action-button primary"><i class="fas fa-plane-departure"></i> Nova Viagem</a>
+                <a th:href="@{/turistas/novo}" class="action-button"><i class="fas fa-user-plus"></i> Novo Turista</a>
+                <a th:href="@{/acomodacoes/novo}" class="action-button"><i class="fas fa-hotel"></i> Nova Acomodação</a>
+            </div>
+        </div>
+
+        <!-- Coluna da Direita: Atividades Recentes -->
+        <div class="content-card">
+            <div class="list-card-header">
+                <h2>Atividades Recentes</h2>
+                <a href="#" class="view-all-link">Ver tudo</a>
+            </div>
+            <ul class="activity-feed">
+                <li class="activity-item">
+                    <div class="activity-icon" style="background-color: #e5f9f0; color: #28a745;"><i class="fas fa-suitcase-rolling"></i></div>
+                    <div class="activity-text">
+                        <strong>Nova viagem</strong> para <strong>Paris</strong> agendada por Maria Silva.
+                        <span class="activity-time">2 horas atrás</span>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon" style="background-color: #e7f3ff; color: #007bff;"><i class="fas fa-user-plus"></i></div>
+                    <div class="activity-text">
+                        <strong>Novo turista</strong> João Santos se cadastrou no sistema.
+                        <span class="activity-time">4 horas atrás</span>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon" style="background-color: #fdeeee; color: #dc3545;"><i class="fas fa-calendar-times"></i></div>
+                    <div class="activity-text">
+                        A viagem para <strong>Tóquio</strong> foi <strong>cancelada</strong>.
+                        <span class="activity-time">1 dia atrás</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

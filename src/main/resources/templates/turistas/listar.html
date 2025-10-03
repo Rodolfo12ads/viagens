@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Turistas</title>
+    <link rel="stylesheet" th:href="@{/turistas.css}">
+
+    <!-- Importando a biblioteca de ícones Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<header class="main-header">
+    <div class="container">
+        <h1><i class="fas fa-users"></i> Gerenciar Turistas</h1>
+        <p class="subtitle">Visualize, adicione, edite ou remova perfis de turistas.</p>
+    </div>
+</header>
+
+<nav class="sub-header">
+    <div class="container">
+        <div class="nav-links">
+            <a th:href="@{/dashboard}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a th:href="@{/turistas}"><i class="fas fa-users"></i> Turistas</a>
+            <a th:href="@{/acomodacoes}"><i class="fas fa-building"></i> Acomodações</a>
+            <a th:href="@{/viagens}" class="active"><i class="fas fa-plane-departure"></i> Viagens</a>
+        </div>
+
+        <div class="nav-actions">
+            <a href="#" class="btn-secondary-outline"><i class="fas fa-print"></i> Imprimir</a>
+            <a href="#" class="btn-secondary-outline"><i class="fas fa-file-export"></i> Exportar</a>
+        </div>
+    </div>
+</nav>
+<!-- ========================================================================== -->
+
+<main class="container">
+    <div class="list-card">
+        <div class="list-card-header">
+            <h2>Turistas Cadastrados</h2>
+            <a th:href="@{/turistas/novo}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Novo Turista
+            </a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Nacionalidade</th>
+                    <th>Sexo</th>
+                    <th class="actions-column">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(turistas )}">
+                    <td colspan="6" class="empty-message">
+                        <i class="fas fa-info-circle"></i> Nenhum turista cadastrado ainda.
+                    </td>
+                </tr>
+                <tr th:each="turista : ${turistas}">
+                    <td th:text="${turista.idTurista}">1</td>
+                    <td class="main-info" th:text="${turista.nome}">Maria Silva</td>
+                    <td th:text="${turista.idade}">34</td>
+                    <td th:text="${turista.nacionalidade}">Brasileira</td>
+                    <td th:text="${turista.sexo}">Feminino</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a th:href="@{/turistas/{id}/editar(id=${turista.idTurista})}" class="btn-action btn-edit" title="Editar">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <form th:action="@{/turistas/{id}(id=${turista.idTurista})}" method="post" style="display:inline;">
+                                <input type="hidden" name="_method" value="DELETE"/>
+                                <button type="submit" class="btn-action btn-delete" title="Excluir"
+                                        onclick="return confirm('Tem certeza que deseja excluir este turista? Esta ação não pode ser desfeita.')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

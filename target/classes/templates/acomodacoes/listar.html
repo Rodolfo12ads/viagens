@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Acomodações</title>
+
+    <!-- Link para o CSS unificado de acomodações -->
+    <link rel="stylesheet" th:href="@{/acomodacoes.css}">
+
+    <!-- Importando a biblioteca de ícones Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Header Padrão -->
+<header class="main-header">
+    <div class="container">
+        <h1><i class="fas fa-building"></i> Gerenciar Acomodações</h1>
+        <p class="subtitle">Visualize, adicione, edite ou remova hotéis, pousadas e outros locais.</p>
+    </div>
+</header>
+
+<nav class="sub-header">
+    <div class="container">
+        <div class="nav-links">
+            <a th:href="@{/dashboard}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a th:href="@{/turistas}"><i class="fas fa-users"></i> Turistas</a>
+            <a th:href="@{/acomodacoes}"><i class="fas fa-building"></i> Acomodações</a>
+            <!-- O link da página atual fica com a classe 'active' -->
+            <a th:href="@{/viagens}" class="active"><i class="fas fa-plane-departure"></i> Viagens</a>
+        </div>
+
+        <div class="nav-actions">
+            <a href="#" class="btn-secondary-outline"><i class="fas fa-print"></i> Imprimir</a>
+            <a href="#" class="btn-secondary-outline"><i class="fas fa-file-export"></i> Exportar</a>
+        </div>
+    </div>
+</nav>
+<!-- ========================================================================== -->
+
+<main class="container">
+    <!-- Card de Conteúdo para a tabela -->
+    <div class="content-card">
+        <!-- Cabeçalho do Card com título e botão de ação -->
+        <div class="list-card-header">
+            <h2>Acomodações Cadastradas</h2>
+            <a th:href="@{/acomodacoes/novo}" class="btn-primary">
+                <i class="fas fa-plus"></i> Nova Acomodação
+            </a>
+        </div>
+
+        <!-- Container da Tabela para responsividade -->
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>Local</th>
+                    <th>Preço / Noite</th>
+                    <th class="actions-column">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Mensagem para caso a lista esteja vazia -->
+                <tr th:if="${#lists.isEmpty(acomodacoes )}">
+                    <td colspan="6" class="empty-message">
+                        <i class="fas fa-info-circle"></i> Nenhuma acomodação cadastrada ainda.
+                    </td>
+                </tr>
+                <!-- Loop para cada acomodação -->
+                <tr th:each="acomodacao : ${acomodacoes}">
+                    <td th:text="${acomodacao.idAcomodacao}">1</td>
+                    <td class="main-info" th:text="${acomodacao.nome}">Hotel Palace</td>
+                    <td th:text="${acomodacao.tipo}">Hotel</td>
+                    <td th:text="${acomodacao.cidade} + ', ' + ${acomodacao.pais}">Paris, França</td>
+                    <!-- Formatando o preço para o padrão monetário brasileiro -->
+                    <td th:text="'R$ ' + ${#numbers.formatDecimal(acomodacao.precoPorNoite, 1, 'POINT', 2, 'COMMA')}">R$ 550,00</td>
+                    <td>
+                        <!-- Botões de Ação Refinados -->
+                        <div class="action-buttons">
+                            <a th:href="@{/acomodacoes/{id}/editar(id=${acomodacao.idAcomodacao})}" class="btn-action btn-edit" title="Editar">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <form th:action="@{/acomodacoes/{id}(id=${acomodacao.idAcomodacao})}" method="post" style="display:inline;">
+                                <input type="hidden" name="_method" value="DELETE"/>
+                                <button type="submit" class="btn-action btn-delete" title="Excluir"
+                                        onclick="return confirm('Tem certeza que deseja excluir esta acomodação? A ação não pode ser desfeita.')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

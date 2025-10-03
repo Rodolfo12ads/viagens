@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Viagens</title>
+    <link rel="stylesheet" th:href="@{/viagens.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Header Padrão -->
+<header class="main-header">
+    <div class="container">
+        <h1><i class="fas fa-map-marked-alt"></i> Gerenciar Viagens</h1>
+        <p class="subtitle">Visualize, adicione, edite ou remova os roteiros de viagens.</p>
+    </div>
+</header>
+
+<!-- ==========================================================================
+   NOVA BARRA DE NAVEGAÇÃO SECUNDÁRIA
+   ========================================================================== -->
+<nav class="sub-header">
+    <div class="container">
+        <div class="nav-links">
+            <a th:href="@{/dashboard}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a th:href="@{/turistas}"><i class="fas fa-users"></i> Turistas</a>
+            <a th:href="@{/acomodacoes}"><i class="fas fa-building"></i> Acomodações</a>
+            <!-- O link da página atual fica com a classe 'active' -->
+            <a th:href="@{/viagens}" class="active"><i class="fas fa-plane-departure"></i> Viagens</a>
+        </div>
+
+        <div class="nav-actions">
+            <a href="#" class="btn-secondary-outline"><i class="fas fa-print"></i> Imprimir</a>
+            <a href="#" class="btn-secondary-outline"><i class="fas fa-file-export"></i> Exportar</a>
+        </div>
+    </div>
+</nav>
+<!-- ========================================================================== -->
+
+
+<main class="container">
+    <!-- Card de Conteúdo para a tabela -->
+    <div class="content-card">
+        <!-- Cabeçalho do Card com título e botão de ação -->
+        <div class="list-card-header">
+            <h2>Viagens Cadastradas</h2>
+            <a th:href="@{/viagens/novo}" class="btn-primary">
+                <i class="fas fa-plus"></i> Nova Viagem
+            </a>
+        </div>
+
+        <!-- Container da Tabela para responsividade -->
+        <div class="table-container">
+            <table>
+                <!-- O resto da sua tabela continua aqui, sem alterações -->
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Destino</th>
+                    <th>Duração</th>
+                    <th>Preço</th>
+                    <th>Turista</th>
+                    <th>Acomodação</th>
+                    <th class="actions-column">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(viagens )}">
+                    <td colspan="7" class="empty-message">
+                        <i class="fas fa-info-circle"></i> Nenhuma viagem cadastrada ainda.
+                    </td>
+                </tr>
+                <tr th:each="viagem : ${viagens}">
+                    <td th:text="${viagem.id}">1</td>
+                    <td class="main-info" th:text="${viagem.pais}">Paris</td>
+                    <td th:text="${viagem.duracao} + ' dias'">7 dias</td>
+                    <td th:text="'R$ ' + ${#numbers.formatDecimal(viagem.preco, 1, 'POINT', 2, 'COMMA')}">R$ 4.500,00</td>
+                    <td th:text="${viagem.turista.nome}">Maria Silva</td>
+                    <td th:text="${viagem.acomodacao.nome}">Hotel Central</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a th:href="@{/viagens/{id}/editar(id=${viagem.id})}" class="btn-action btn-edit" title="Editar">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <form th:action="@{/viagens/{id}(id=${viagem.id})}" method="post" style="display:inline;">
+                                <input type="hidden" name="_method" value="DELETE"/>
+                                <button type="submit" class="btn-action btn-delete" title="Excluir"
+                                        onclick="return confirm('Tem certeza que deseja excluir esta viagem? A ação não pode ser desfeita.')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

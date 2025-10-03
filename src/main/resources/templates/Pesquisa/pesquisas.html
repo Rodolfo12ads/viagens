@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Pesquisas</title>
+    <link rel="stylesheet" th:href="@{/turistas.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<header class="main-header">
+    <div class="container">
+        <h1><i class="fas fa-search"></i> Central de Pesquisas</h1>
+        <p class="subtitle">Execute consultas customizadas diretamente pela interface.</p>
+    </div>
+</header>
+
+<nav class="sub-header">
+    <div class="container">
+        <div class="nav-links">
+            <a th:href="@{/dashboard}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a th:href="@{/turistas}"><i class="fas fa-users"></i> Turistas</a>
+            <a th:href="@{/acomodacoes}"><i class="fas fa-building"></i> Acomodações</a>
+            <a th:href="@{/viagens}"><i class="fas fa-plane-departure"></i> Viagens</a>
+            <a th:href="@{/pesquisas}" class="active"><i class="fas fa-search"></i> Pesquisas</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="pesquisa-grid">
+        <div class="content-card">
+            <div class="list-card-header">
+                <h2>Viagens com Preço Acima de:</h2>
+            </div>
+            <form class="pesquisa-form" th:action="@{/pesquisas/viagensPorPreco}" method="post">
+                <div class="form-group">
+                    <label for="valorMinimo">Valor Mínimo (R$ )</label>
+                    <input type="number" id="valorMinimo" name="valorMinimo" class="form-control" placeholder="Ex: 5000" step="0.01" required>
+                </div>
+                <button type="submit" class="btn-primary"><i class="fas fa-search"></i> Pesquisar</button>
+            </form>
+        </div>
+
+        <div class="content-card">
+            <div class="list-card-header">
+                <h2>Encontrar Turista por Nome</h2>
+            </div>
+            <form class="pesquisa-form" th:action="@{/pesquisas/turistaPorNome}" method="post">
+                <div class="form-group">
+                    <label for="nome">Nome Exato do Turista</label>
+                    <input type="text" id="nome" name="nome" class="form-control" placeholder="Ex: Maria Silva" required>
+                </div>
+                <button type="submit" class="btn-primary"><i class="fas fa-search"></i> Pesquisar</button>
+            </form>
+        </div>
+
+        <div class="content-card">
+            <div class="list-card-header">
+                <h2>Acomodações Sem Viagens</h2>
+            </div>
+            <div class="pesquisa-form">
+                <p>Clique no botão para encontrar todas as acomodações que nunca foram associadas a uma viagem.</p>
+                <a th:href="@{/pesquisas/acomodacoesNaoUtilizadas}" class="btn-primary"><i class="fas fa-search"></i> Pesquisar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="resultados-container">
+        <!-- Resultado da Pesquisa de Viagens -->
+        <div th:if="${not #lists.isEmpty(viagensResultado)}">
+            <h3>Resultado: Viagens com preço acima de R$ <span th:text="${#numbers.formatDecimal(valorMinimoPesquisado, 1, 2)}"></span></h3>
+            <!-- Tabela de resultados (reutilizando o estilo) -->
+            <div class="content-card">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>ID</th><th>Destino</th><th>Preço</th></tr></thead>
+                        <tbody>
+                        <tr th:each="viagem : ${viagensResultado}">
+                            <td th:text="${viagem.id}"></td>
+                            <td th:text="${viagem.pais}"></td>
+                            <td th:text="'R$ ' + ${#numbers.formatDecimal(viagem.preco, 1, 'POINT', 2, 'COMMA')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultado da Pesquisa de Turistas -->
+        <div th:if="${nomePesquisado != null}">
+            <h3>Resultado da busca por "<span th:text="${nomePesquisado}"></span>"</h3>
+            <div class="content-card">
+                <div th:if="${not #lists.isEmpty(turistasResultado)}" class="table-container">
+                    <table>
+                        <thead><tr><th>ID</th><th>Nome</th><th>Nacionalidade</th></tr></thead>
+                        <tbody>
+                        <tr th:each="turista : ${turistasResultado}">
+                            <td th:text="${turista.idTurista}"></td>
+                            <td th:text="${turista.nome}"></td>
+                            <td th:text="${turista.nacionalidade}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:if="${#lists.isEmpty(turistasResultado)}" class="empty-message" style="padding: 20px;">
+                    <i class="fas fa-exclamation-circle"></i> Nenhum turista encontrado com este nome.
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultado da Pesquisa de Acomodações -->
+        <div th:if="${pesquisaAcomodacaoFeita}">
+            <h3>Resultado: Acomodações não utilizadas em viagens</h3>
+            <div class="content-card">
+                <div th:if="${not #lists.isEmpty(acomodacoesResultado)}" class="table-container">
+                    <table>
+                        <thead><tr><th>ID</th><th>Nome</th><th>Cidade</th><th>Preço por Noite</th></tr></thead>
+                        <tbody>
+                        <tr th:each="acomodacao : ${acomodacoesResultado}">
+                            <td th:text="${acomodacao.idAcomodacao}"></td>
+                            <td th:text="${acomodacao.nome}"></td>
+                            <td th:text="${acomodacao.cidade}"></td>
+                            <td th:text="${acomodacao.precoPorNoite}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:if="${#lists.isEmpty(acomodacoesResultado)}" class="empty-message" style="padding: 20px;">
+                    <i class="fas fa-check-circle"></i> Todas as acomodações estão sendo utilizadas!
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

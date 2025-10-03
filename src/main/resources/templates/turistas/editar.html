@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${turista.idTurista == null} ? 'Novo Turista' : 'Editar Turista'"></title>
+    <link rel="stylesheet" th:href="@{/turistas.css}">
+    <!-- Importando a biblioteca de ícones Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<header class="main-header">
+    <div class="container">
+        <!-- Título e ícone dinâmicos -->
+        <h1 th:if="${turista.idTurista == null}"><i class="fas fa-user-plus"></i> Novo Turista</h1>
+        <h1 th:unless="${turista.idTurista == null}"><i class="fas fa-user-edit"></i> Editar Turista</h1>
+        <p class="subtitle">Preencha os dados abaixo para gerenciar o perfil do turista.</p>
+    </div>
+</header>
+
+<nav class="sub-header">
+    <div class="container">
+        <div class="nav-links">
+            <a th:href="@{/dashboard}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a th:href="@{/turistas}"><i class="fas fa-users"></i> Turistas</a>
+            <a th:href="@{/acomodacoes}"><i class="fas fa-building"></i> Acomodações</a>
+            <a th:href="@{/viagens}" class="active"><i class="fas fa-plane-departure"></i> Viagens</a>
+        </div>
+
+        <div class="nav-actions">
+            <a href="#" class="btn-secondary-outline"><i class="fas fa-print"></i> Imprimir</a>
+            <a href="#" class="btn-secondary-outline"><i class="fas fa-file-export"></i> Exportar</a>
+        </div>
+    </div>
+</nav>
+<!-- ========================================================================== -->
+
+<main class="container">
+    <div class="form-card">
+        <form th:action="${turista.idTurista == null} ? @{/turistas} : @{/turistas/{id}(id=${turista.idTurista} )}"
+              th:object="${turista}" method="post">
+
+
+            <input type="hidden" name="_method" th:if="${turista.idTurista != null}" value="PUT"/>
+            <input type="hidden" th:if="${turista.idTurista != null}" th:field="*{idTurista}"/>
+            <div class="form-group">
+                <label for="nome"><i class="fas fa-user"></i> Nome Completo</label>
+                <input type="text" id="nome" class="form-control" th:field="*{nome}" placeholder="Ex: João da Silva" required/>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="idade"><i class="fas fa-birthday-cake"></i> Idade</label>
+                    <input type="number" id="idade" class="form-control" th:field="*{idade}" min="0" placeholder="Ex: 35" required/>
+                </div>
+                <div class="form-group">
+                    <label for="nacionalidade"><i class="fas fa-flag"></i> Nacionalidade</label>
+                    <input type="text" id="nacionalidade" class="form-control" th:field="*{nacionalidade}" placeholder="Ex: Brasileira" required/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sexo"><i class="fas fa-venus-mars"></i> Sexo</label>
+                <select id="sexo" class="form-control" th:field="*{sexo}" required>
+                    <option value="" disabled selected>Selecione uma opção...</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/turistas}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i>
+                    <span th:text="${turista.idTurista == null} ? 'Cadastrar Turista' : 'Salvar Alterações'"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

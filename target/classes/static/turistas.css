@@ -1,0 +1,237 @@
+/* ==========================================================================
+   1. GERAL, FONTES E CONFIGURAÇÕES BASE
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap' );
+
+body {
+    font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    color: #5a6a7b;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+/* ==========================================================================
+   2. HEADER PRINCIPAL
+   ========================================================================== */
+
+.main-header {
+    background: linear-gradient(45deg, #0077cc, #005fa3);
+    color: white;
+    padding: 40px 0;
+    /* AJUSTE: Removida a margem inferior para conectar com o sub-header */
+}
+
+.main-header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.main-header .subtitle {
+    margin: 5px 0 0 0;
+    font-size: 1.1em;
+    opacity: 0.9;
+    font-weight: 400;
+}
+
+
+/* ==========================================================================
+   3. NOVO: BARRA DE NAVEGAÇÃO SECUNDÁRIA (SUB-HEADER)
+   ========================================================================== */
+
+.sub-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px; /* Espaçamento para o conteúdo principal */
+    padding: 0 20px;
+}
+
+.sub-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.sub-header .nav-links {
+    display: flex;
+    gap: 5px;
+}
+
+.sub-header .nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #5a6a7b;
+    font-weight: 600;
+    font-size: 0.95em;
+    border-bottom: 3px solid transparent; /* Espaço para a borda ativa */
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.sub-header .nav-links a:hover {
+    color: #0077cc;
+}
+
+/* Estilo do link ativo */
+.sub-header .nav-links a.active {
+    color: #0077cc;
+    border-bottom-color: #0077cc;
+}
+
+.sub-header .nav-actions {
+    display: flex;
+    gap: 10px;
+}
+
+
+/* ==========================================================================
+   4. CARD DE CONTEÚDO (Container para formulários e tabelas)
+   ========================================================================== */
+
+.content-card {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+}
+
+
+/* ==========================================================================
+   5. ESTILOS DE FORMULÁRIO (Novo/Editar Turista)
+   ========================================================================== */
+
+.form-card-body { padding: 40px; }
+.form-group { margin-bottom: 25px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #343a40; font-size: 0.95em; display: flex; align-items: center; gap: 8px; }
+.form-group label i { color: #0077cc; width: 15px; }
+.form-control { width: 100%; padding: 12px 15px; font-size: 1em; font-family: 'Poppins', sans-serif; border: 1px solid #ced4da; border-radius: 8px; background-color: #f8f9fa; transition: border-color 0.2s ease, box-shadow 0.2s ease; box-sizing: border-box; }
+.form-control:focus { outline: none; border-color: #0077cc; background-color: #fff; box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.15); }
+.form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; padding-top: 25px; border-top: 1px solid #e9ecef; }
+
+
+/* ==========================================================================
+   6. ESTILOS DE TABELA (Listagem de Turistas)
+   ========================================================================== */
+
+.list-card-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 25px; border-bottom: 1px solid #e9ecef; }
+.list-card-header h2 { margin: 0; font-size: 1.4em; color: #343a40; }
+.table-container { width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
+th, td { padding: 15px 25px; text-align: left; border-bottom: 1px solid #e9ecef; white-space: nowrap; }
+thead tr { background-color: #f8f9fa; }
+th { font-weight: 600; color: #343a40; text-transform: uppercase; font-size: 0.85em; letter-spacing: 0.5px; }
+tbody tr:hover { background-color: #f1f3f5; }
+td.main-info { font-weight: 600; color: #343a40; }
+.actions-column { text-align: right; }
+.empty-message { text-align: center; padding: 50px; color: #868e96; }
+.empty-message i { margin-right: 10px; }
+
+
+/* ==========================================================================
+   7. BOTÕES (Estilos compartilhados e específicos)
+   ========================================================================== */
+
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; background-color: #0077cc; color: white; padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+.btn-primary:hover { background-color: #005fa3; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 119, 204, 0.3); }
+
+.btn-secondary { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; background-color: #e9ecef; color: #5a6a7b; padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease; }
+.btn-secondary:hover { background-color: #d3d9df; }
+
+/* NOVO: Estilo de botão para o sub-header */
+.btn-secondary-outline { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; background-color: transparent; color: #5a6a7b; padding: 8px 15px; border: 1px solid #ced4da; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+.btn-secondary-outline:hover { background-color: #f8f9fa; color: #0077cc; border-color: #0077cc; }
+
+.action-buttons { display: flex; justify-content: flex-end; gap: 10px; }
+.btn-action { display: inline-block; border: none; background: none; cursor: pointer; padding: 8px; border-radius: 50%; width: 36px; height: 36px; font-size: 0.9em; transition: background-color 0.2s ease; }
+.btn-action i { display: flex; align-items: center; justify-content: center; }
+.btn-edit { color: #ffc107; }
+.btn-edit:hover { background-color: #ffc10720; }
+.btn-delete { color: #dc3545; }
+.btn-delete:hover { background-color: #dc354520; }
+
+
+/* ==========================================================================
+   8. RESPONSIVIDADE (Ajustes para telas menores)
+   ========================================================================== */
+
+@media (max-width: 992px) {
+    /* NOVO: Esconde os botões de ação extras no sub-header em telas menores */
+    .sub-header .nav-actions {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    /* NOVO: Centraliza os links do sub-header em telas muito pequenas */
+    .sub-header .container {
+        justify-content: center;
+    }
+
+    /* Ajustes no formulário */
+    .form-row { grid-template-columns: 1fr; }
+    .form-card-body { padding: 25px; }
+    .form-actions { flex-direction: column-reverse; }
+    .form-actions .btn-primary, .form-actions .btn-secondary { width: 100%; box-sizing: border-box; justify-content: center; }
+
+    /* Ajustes na listagem */
+    .list-card-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+}
+
+
+/* ==========================================================================
+   9. ESTILOS DA PÁGINA DE PESQUISA
+   ========================================================================== */
+
+.pesquisa-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.pesquisa-form {
+    padding: 25px;
+}
+
+.pesquisa-form .form-group {
+    margin-bottom: 15px;
+}
+
+.pesquisa-form button, .pesquisa-form a.btn-primary {
+    width: 100%;
+    justify-content: center;
+}
+
+.resultados-container {
+    margin-top: 40px;
+}
+
+.resultados-container h3 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #343a40;
+}
